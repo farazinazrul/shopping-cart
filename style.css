@@ -53,3 +53,8 @@ body{
 	background-color: #2FBE70;
 	border: none;
 }
+
+#replace-heading{
+	margin-top: 100px;
+	display: none;
+}

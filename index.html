@@ -13,10 +13,13 @@
 <body>
 
    <section>
-      <div class="container">
+
+      <h1 class='text-center' id="replace-heading">Your order has been accepted</h1>
+
+      <div class="container" id="body">
          <div class="cart">
             <div class="col-md-12 col-lg-10 mx-auto">
-               <div class="cart-item">
+               <div class="cart-item" id='phone'>
                   <div class="row">
                      <div class="col-md-7 center-item">
                         <img src="images/product-1.png" alt="">
@@ -25,17 +28,16 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button class="btn btn-default"><i id='phone-minus' class="fas fa-minus"></i></button>
+                           <input type="text" class="form-control text-center" value="1" id='phone-value'>
+                           <button class="btn btn-default"><i id='phone-plus' class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$ <span id='phone-price'>1219</span></h5>
                      </div>
                   </div>
                </div>
 
-               <div class="cart-item">
+               <div class="cart-item" id='cart'>
                   <div class="row">
                      <div class="col-md-7 center-item mx-auto">
                         <img src="images/product-2.png" alt="">
@@ -43,15 +45,13 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button class="btn btn-default"><i id='case-minus' class="fas fa-minus"></i></button>
+                           <input type="text" class="form-control text-center" value="1" id='case-value'>
+                           <button class="btn btn-default"><i id='case-plus' class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
-                     </div>
-                  </div>
+                        <h5>$ <span id='case-price'>59</span></h5>
+                                       </div>
                </div>
 
                <div class="cart-item">
@@ -59,24 +59,84 @@
 
                      <div class="col-md-8">
                         <h5>Subtotal: </h5>
-                        <h5>Tax:</h5>
+                        <h5>Tax(5% of subtotal):</h5>
                         <h5>Total:</h5>
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id='subtotal'>1278</span></h5>
+                        <h5>$ <span id='tax'>63.90</span></h5>
+                        <h5>$ <span id='total'>1341.90</span></h5>
                      </div>
                   </div>
                </div>
                <div class="col-md-12 pt-4 pb-4">
-                  <button type="button" class="btn btn-success check-out">Check Out</button>
+                  <button type="button" class="btn btn-success check-out" id='checkout'>Check Out</button>
                </div>
             </div>
          </div>
       </div>
    </section>
+
+   <script>
+      
+      var subtotalString= document.getElementById('subtotal').innerText;
+      var subtotal= parseFloat(subtotalString);
+
+      function count(plusKeyId, minusKeyId, productId, item_price_Id){
+
+         // id of button
+         const minusBtn = document.getElementById(minusKeyId);
+         const plusBtn = document.getElementById(plusKeyId);
+
+         // value selector
+         var valString = document.getElementById(productId).value;
+         var priceString= document.getElementById(item_price_Id).innerText;
+         var val= parseInt(valString);
+         var price=parseFloat(priceString);
+
+         
+         //- button event handler
+         minusBtn.addEventListener('click', function(){
+            if(val>0){
+               val = val - 1;
+               subtotal=subtotal-price;
+               calc(val, subtotal,productId,item_price_Id)
+            }
+         });
+         
+         
+         //+ button event handler
+         plusBtn.addEventListener('click', function(){
+            val = val + 1;
+            subtotal=subtotal+price;
+            calc(val, subtotal,productId,item_price_Id)
+         });
+
+         //calculation function
+         function calc(val, subtotal,productId,item_price_Id){
+            var totalPrice = val*price;
+            var tax= 5*subtotal/100;
+            var total= subtotal+tax;
+            document.getElementById(productId).value = val;
+            document.getElementById(item_price_Id).innerText = totalPrice;
+            document.getElementById('subtotal').innerText= subtotal;
+            document.getElementById('tax').innerText= tax;
+            document.getElementById('total').innerText= total;
+         }
+      }
+
+      //calling method type
+      count('phone-plus', 'phone-minus', 'phone-value', 'phone-price');
+      count('case-plus', 'case-minus', 'case-value', 'case-price');
+
+      var check=document.getElementById("checkout");
+      check.addEventListener("click", function(){
+         document.getElementById('body').style.display="none";
+         document.getElementById('replace-heading').style.display="block";
+      })
+      
+   </script>
 </body>
 
 </html>
